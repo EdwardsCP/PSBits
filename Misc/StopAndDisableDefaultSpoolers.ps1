@@ -1,8 +1,13 @@
-
 # the script STOP and DISABLES Print Spooler service (aka #PrintNightmare) on each server from the list below IF ONLY DEFAULT PRINTERS EXIST.
 # revert if you need: go to services.msc, find the "print spooler" service, change startup type to "automatic" and start the service.
 
-$computers = "dc1", "dc2", "srv1", "srv2" # you can also read this from file using Get-Content
+#get a list of computer names from a specific OU in AD
+$servers = Get-ADComputer -SearchBase 'OU=Servers,DC=ExampleDomain,DC=com' -filter *
+$computers = @()
+foreach ($server in $servers){
+	$computers += $server.name
+	}
+	
 
 foreach ($computer in $computers)
 {
